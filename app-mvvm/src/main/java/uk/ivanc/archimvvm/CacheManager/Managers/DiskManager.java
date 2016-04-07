@@ -13,61 +13,61 @@ import uk.ivanc.archimvvm.ArchiApplication;
 import uk.ivanc.archimvvm.CacheManager.Core.BaseModel;
 
 public class DiskManager<K extends BaseModel, V extends RealmObject> {
-    private static Realm realm = null;
+    private static Realm sRealm = null;
 
     public DiskManager() {
     }
 
     public static Realm getInstance() {
-        if (realm == null) {
-            RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(ArchiApplication.getAppContext()).name("myrealm.realm").build();
+        if (sRealm == null) {
+            RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(ArchiApplication.getAppContext()).name("myrealm.sRealm").build();
             try {
-                realm = Realm.getInstance(realmConfiguration);
+                sRealm = Realm.getInstance(realmConfiguration);
             } catch (RealmMigrationNeededException e) {
                 Realm.deleteRealm(realmConfiguration);
-                realm = Realm.getInstance(realmConfiguration);
+                sRealm = Realm.getInstance(realmConfiguration);
             }
         }
-        return realm;
+        return sRealm;
     }
 
-    //public Observable<K> asyncSaveToDisk(K model) {
-    //  // map internal UI objects to Realm objects
-    //  return RealmObservable.object(context, new Func1<Realm, V>() {
-    //    @Override
-    //    public V call(Realm realm) {
-    //      // internal object instances are not created by realm
-    //      // saving them using copyToRealm returning instance associated with realm
-    //      return realm.copyToRealm((V) model.transformToRealm());
-    //    }
-    //  }).map(new Func1<V, K>() {
-    //    @Override
-    //    public K call(V realmModel) {
-    //      // map to UI object
-    //      return (K) model.transformFromRealm(realmModel);
-    //    }
-    //  });
-    //}
+//    public Observable<K> asyncSaveToDisk(K model) {
+//      // map internal UI objects to Realm objects
+//      return RealmObservable.object(context, new Func1<Realm, V>() {
+//        @Override
+//        public V call(Realm sRealm) {
+//          // internal object instances are not created by sRealm
+//          // saving them using copyToRealm returning instance associated with sRealm
+//          return sRealm.copyToRealm((V) model.transformToRealm());
+//        }
+//      }).map(new Func1<V, K>() {
+//        @Override
+//        public K call(V realmModel) {
+//          // map to UI object
+//          return (K) model.transformFromRealm(realmModel);
+//        }
+//      });
+//    }
 
-    //public Observable<List<K>> asyncLoadFromDisk(K model) {
-    //  return RealmObservable.results(context, new Func1<Realm, RealmResults<V>>() {
-    //    @Override
-    //    public RealmResults<V> call(Realm realm) {
-    //      // find all model
-    //      return (RealmResults<V>) realm.where(model.getRealmClass()).findAll();
-    //    }
-    //  }).map(new Func1<RealmResults<V>, List<K>>() {
-    //    @Override
-    //    public List<K> call(RealmResults<V> realmModels) {
-    //      // map them to UI objects
-    //      final List<K> models = new ArrayList<K>(realmModels.size());
-    //      for (V realmModel : realmModels) {
-    //        models.add((K) model.transformFromRealm(realmModel));
-    //      }
-    //      return models;
-    //    }
-    //  });
-    //}
+//    public Observable<List<K>> asyncLoadFromDisk(K model) {
+//      return RealmObservable.results(context, new Func1<Realm, RealmResults<V>>() {
+//        @Override
+//        public RealmResults<V> call(Realm sRealm) {
+//          // find all model
+//          return (RealmResults<V>) sRealm.where(model.getRealmClass()).findAll();
+//        }
+//      }).map(new Func1<RealmResults<V>, List<K>>() {
+//        @Override
+//        public List<K> call(RealmResults<V> realmModels) {
+//          // map them to UI objects
+//          final List<K> models = new ArrayList<K>(realmModels.size());
+//          for (V realmModel : realmModels) {
+//            models.add((K) model.transformFromRealm(realmModel));
+//          }
+//          return models;
+//        }
+//      });
+//    }
 
     public void saveToDisk(K model) {
         // map internal UI objects to Realm objects
@@ -78,7 +78,7 @@ public class DiskManager<K extends BaseModel, V extends RealmObject> {
         getInstance().commitTransaction();
 
         //async
-        //realm.executeTransaction(new Realm.Transaction() {
+        //sRealm.executeTransaction(new Realm.Transaction() {
         //  @Override
         //  public void execute(Realm bgRealm) {
         //    bgRealm.copyToRealmOrUpdate((V) model.transformToRealm());
@@ -95,13 +95,13 @@ public class DiskManager<K extends BaseModel, V extends RealmObject> {
     }
 
     public List<K> loadAllFromDisk(K model) {
-        if (model == null) return null;
-
-        RealmResults<V> realmModels = getInstance().where(model.getRealmClass()).findAll();
-
-        if (realmModels == null || realmModels.size() == 0)
+        if (model == null) {
             return null;
-
+        }
+        RealmResults<V> realmModels = getInstance().where(model.getRealmClass()).findAll();
+        if (realmModels == null || realmModels.size() == 0) {
+            return null;
+        }
         final List<K> models = new ArrayList<K>(realmModels.size());
         for (V realmModel : realmModels) {
             models.add((K) model.transformFromRealm(realmModel));
@@ -110,13 +110,13 @@ public class DiskManager<K extends BaseModel, V extends RealmObject> {
     }
 
     public List<K> loadFromDiskWithCondition(K model, String field, String value) {
-        if (model == null) return null;
-
-        RealmResults<V> realmModels = getInstance().where(model.getRealmClass()).contains(field, value).findAll();
-
-        if (realmModels == null || realmModels.size() == 0)
+        if (model == null) {
             return null;
-
+        }
+        RealmResults<V> realmModels = getInstance().where(model.getRealmClass()).contains(field, value).findAll();
+        if (realmModels == null || realmModels.size() == 0) {
+            return null;
+        }
         final List<K> models = new ArrayList<K>(realmModels.size());
         for (V realmModel : realmModels) {
             models.add((K) model.transformFromRealm(realmModel));
@@ -125,9 +125,9 @@ public class DiskManager<K extends BaseModel, V extends RealmObject> {
     }
 
     public void closeRealm() {
-        if (realm != null) {
-            realm.close();
-            realm = null;
+        if (sRealm != null) {
+            sRealm.close();
+            sRealm = null;
         }
     }
 }

@@ -15,23 +15,22 @@ import rx.Observable;
  */
 public abstract class Cache<T> {
 
-    //Internal Processing
+    // Internal Processing
     protected abstract boolean cacheInMemory(T model);
 
     protected abstract boolean storeToDisk(T model);
 
-    protected abstract boolean ArriveFromMemory(T model);
+    protected abstract boolean arriveFromMemory(T model);
 
-    protected abstract boolean ArriveFromDisk(T model);
+    protected abstract boolean arriveFromDisk(T model);
 
-    protected abstract boolean ArriveFromNetwork(T model);
+    protected abstract boolean arriveFromNetwork(T model);
 
     protected abstract T obtainFromMemory(HashMap<String, Object> param);
 
     protected abstract T obtainFromDisk(HashMap<String, Object> param);
 
     protected abstract T obtainFromNetwork(HashMap<String, Object> param);
-
 
     public Observable<T> processing(boolean refresh, HashMap<String, Object> param) {
         return refresh ? network(param) : Observable.concat(
@@ -48,7 +47,7 @@ public abstract class Cache<T> {
         });
 
         return observable.doOnNext(data -> {
-            ArriveFromMemory(data);
+            arriveFromMemory(data);
         }).compose(logSource("MEMORY"));
     }
 
@@ -60,7 +59,7 @@ public abstract class Cache<T> {
 
         // Cache disk responses in memory
         return observable.doOnNext(data -> {
-            ArriveFromDisk(data);
+            arriveFromDisk(data);
         }).compose(logSource("DISK"));
     }
 
@@ -72,7 +71,7 @@ public abstract class Cache<T> {
 
         // Save network responses to disk and cache in memory
         return observable.doOnNext(data -> {
-            ArriveFromNetwork(data);
+            arriveFromNetwork(data);
         }).compose(logSource("NETWORK"));
     }
 
@@ -86,5 +85,4 @@ public abstract class Cache<T> {
             }
         });
     }
-
 }

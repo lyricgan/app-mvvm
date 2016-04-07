@@ -54,19 +54,19 @@ public class GitHubRepoCache extends Cache<List<Repository>> {
     }
 
     @Override
-    protected boolean ArriveFromMemory(List<Repository> model) {
+    protected boolean arriveFromMemory(List<Repository> model) {
         return false;
     }
 
     @Override
-    protected boolean ArriveFromDisk(List<Repository> model) {
+    protected boolean arriveFromDisk(List<Repository> model) {
         //cacheInMemory(model);
         //return true;
         return false;
     }
 
     @Override
-    protected boolean ArriveFromNetwork(List<Repository> model) {
+    protected boolean arriveFromNetwork(List<Repository> model) {
         cacheInMemory(model);
         //storeToDisk(model);
         return true;

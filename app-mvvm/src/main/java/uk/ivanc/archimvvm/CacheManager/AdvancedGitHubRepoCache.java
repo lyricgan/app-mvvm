@@ -97,20 +97,20 @@ public class AdvancedGitHubRepoCache extends AdvancedCache<List<Repository>> {
     }
 
     @Override
-    protected boolean ArriveFromMemory(AdvancedModel<List<Repository>> model) {
+    protected boolean arriveFromMemory(AdvancedModel<List<Repository>> model) {
         return false;
     }
 
     @Override
-    protected boolean ArriveFromDisk(AdvancedModel<List<Repository>> model) {
-        System.out.println("ArriveFromDisk is on processing.");
+    protected boolean arriveFromDisk(AdvancedModel<List<Repository>> model) {
+        System.out.println("arriveFromDisk is on processing.");
         cacheInMemory(model);
         return true;
     }
 
     @Override
-    protected boolean ArriveFromNetwork(AdvancedModel<List<Repository>> model) {
-        System.out.println("ArriveFromNetwork is on processing.");
+    protected boolean arriveFromNetwork(AdvancedModel<List<Repository>> model) {
+        System.out.println("arriveFromNetwork is on processing.");
         cacheInMemory(model);
         storeToDisk(model);
         return true;

@@ -17,7 +17,6 @@ import uk.ivanc.archimvvm.MVVM.Model.Repository;
 import uk.ivanc.archimvvm.MVVM.ViewModel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity implements MainViewModel.DataListener {
-
     private MainActivityBinding binding;
     private MainViewModel mainViewModel;
 

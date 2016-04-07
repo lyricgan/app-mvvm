@@ -15,7 +15,6 @@ import uk.ivanc.archimvvm.MVVM.Model.Repository;
 import uk.ivanc.archimvvm.MVVM.ViewModel.RepositoryViewModel;
 
 public class RepositoryActivity extends AppCompatActivity {
-
     private static final String EXTRA_REPOSITORY = "EXTRA_REPOSITORY";
 
     private RepositoryActivityBinding binding;

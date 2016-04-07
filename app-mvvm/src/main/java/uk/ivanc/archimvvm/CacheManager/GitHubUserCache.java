@@ -21,19 +21,18 @@ import uk.ivanc.archimvvm.MVVM.Model.User;
  * a certain point in time.
  */
 public class GitHubUserCache extends Cache<List<User>> {
-
-    private String key = null;
+    private String mKey = null;
 
     public GitHubUserCache(String key) {
-        this.key = key;
+        this.mKey = key;
     }
 
     @Override
     public boolean cacheInMemory(List<User> model) {
-        if (key == null || model == null) {
+        if (mKey == null || model == null) {
             return false;
         }
-        MemoryManager.instance.push(key, model);
+        MemoryManager.instance.push(mKey, model);
         return true;
     }
 
@@ -49,18 +48,18 @@ public class GitHubUserCache extends Cache<List<User>> {
     }
 
     @Override
-    protected boolean ArriveFromMemory(List<User> model) {
+    protected boolean arriveFromMemory(List<User> model) {
         return false;
     }
 
     @Override
-    protected boolean ArriveFromDisk(List<User> model) {
+    protected boolean arriveFromDisk(List<User> model) {
         cacheInMemory(model);
         return true;
     }
 
     @Override
-    protected boolean ArriveFromNetwork(List<User> model) {
+    protected boolean arriveFromNetwork(List<User> model) {
         cacheInMemory(model);
         storeToDisk(model);
         return true;
@@ -69,7 +68,7 @@ public class GitHubUserCache extends Cache<List<User>> {
     @Override
     public List<User> obtainFromMemory(HashMap<String, Object> param) {
         System.out.println("obtainFromMemory is on processing.");
-        return (List<User>) MemoryManager.instance.pop(key);
+        return (List<User>) MemoryManager.instance.pop(mKey);
     }
 
     @Override

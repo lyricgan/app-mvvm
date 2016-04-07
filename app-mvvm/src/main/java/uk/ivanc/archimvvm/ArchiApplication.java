@@ -7,29 +7,28 @@ import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
 public class ArchiApplication extends Application {
-
-    //private Scheduler defaultSubscribeScheduler;
-    private static Context context;
+    private Scheduler defaultSubscribeScheduler;
+    private static Context sContext;
 
     public static Context getAppContext() {
-        return context;
+        return sContext;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
+        sContext = this;
     }
 
-//    public Scheduler defaultSubscribeScheduler() {
-//        if (defaultSubscribeScheduler == null) {
-//            defaultSubscribeScheduler = Schedulers.io();
-//        }
-//        return defaultSubscribeScheduler;
-//    }
+    public Scheduler defaultSubscribeScheduler() {
+        if (defaultSubscribeScheduler == null) {
+            defaultSubscribeScheduler = Schedulers.io();
+        }
+        return defaultSubscribeScheduler;
+    }
 
-    //User to change scheduler from tests
-//    public void setDefaultSubscribeScheduler(Scheduler scheduler) {
-//        this.defaultSubscribeScheduler = scheduler;
-//    }
+    // User to change scheduler from tests
+    public void setDefaultSubscribeScheduler(Scheduler scheduler) {
+        this.defaultSubscribeScheduler = scheduler;
+    }
 }

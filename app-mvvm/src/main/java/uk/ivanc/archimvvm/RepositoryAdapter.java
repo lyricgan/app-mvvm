@@ -13,7 +13,6 @@ import uk.ivanc.archimvvm.MVVM.Model.Repository;
 import uk.ivanc.archimvvm.MVVM.ViewModel.ItemRepoViewModel;
 
 public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepositoryViewHolder> {
-
     private List<Repository> repositories;
 
     public RepositoryAdapter() {

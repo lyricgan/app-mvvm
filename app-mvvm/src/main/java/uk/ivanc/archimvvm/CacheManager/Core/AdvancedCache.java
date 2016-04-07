@@ -48,11 +48,11 @@ public abstract class AdvancedCache<T> {
 
     protected abstract boolean storeToDisk(AdvancedModel<T> model);
 
-    protected abstract boolean ArriveFromMemory(AdvancedModel<T> model);
+    protected abstract boolean arriveFromMemory(AdvancedModel<T> model);
 
-    protected abstract boolean ArriveFromDisk(AdvancedModel<T> model);
+    protected abstract boolean arriveFromDisk(AdvancedModel<T> model);
 
-    protected abstract boolean ArriveFromNetwork(AdvancedModel<T> model);
+    protected abstract boolean arriveFromNetwork(AdvancedModel<T> model);
 
     protected abstract void obtainFromMemory(Subject<T, T> stream, HashMap<String, Object> param);
 
@@ -90,7 +90,7 @@ public abstract class AdvancedCache<T> {
                     subscriber.onNext(data);
                     subscriber.onCompleted();
                 }
-                ArriveFromMemory(new AdvancedModel(TYPE_MEMORY, curState, stamp, data));
+                arriveFromMemory(new AdvancedModel(TYPE_MEMORY, curState, stamp, data));
             }).compose(logSource("MEMORY")).subscribe(new Observer<T>() {
                 @Override
                 public void onCompleted() {
@@ -145,7 +145,7 @@ public abstract class AdvancedCache<T> {
                     subscriber.onCompleted();
                 }
                 // Cache disk responses in memory
-                ArriveFromDisk(new AdvancedModel(TYPE_DISK, curState, stamp, data));
+                arriveFromDisk(new AdvancedModel(TYPE_DISK, curState, stamp, data));
             }).compose(logSource("DISK")).subscribe(new Observer<T>() {
                 @Override
                 public void onCompleted() {
@@ -202,7 +202,7 @@ public abstract class AdvancedCache<T> {
                     subscriber.onCompleted();
                 }
                 // Save network responses to disk and cache in memory
-                ArriveFromNetwork(new AdvancedModel(TYPE_NETWORK, curState, stamp, data));
+                arriveFromNetwork(new AdvancedModel(TYPE_NETWORK, curState, stamp, data));
             }).compose(logSource("NETWORK")).subscribe(new Observer<T>() {
                 @Override
                 public void onCompleted() {

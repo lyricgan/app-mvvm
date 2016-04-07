@@ -10,20 +10,20 @@ public enum MemoryManager {
      */
     instance;
 
-    private LruCache mDataCacher = new LruCache<String, Object>((int) (Runtime.getRuntime().maxMemory() / 8));
+    private LruCache mDataCache = new LruCache<String, Object>((int) (Runtime.getRuntime().maxMemory() / 8));
 
     MemoryManager() {
     }
 
     public void remove(Object key) {
-        mDataCacher.remove(key);
+        mDataCache.remove(key);
     }
 
     public Object pop(Object key) {
-        return mDataCacher.get(key);
+        return mDataCache.get(key);
     }
 
     public Object push(Object key, Object data) {
-        return mDataCacher.put(key, data);
+        return mDataCache.put(key, data);
     }
 }
