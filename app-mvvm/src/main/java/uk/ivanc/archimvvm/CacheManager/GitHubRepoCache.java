@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import uk.ivanc.archimvvm.CacheManager.Core.Cache;
-import uk.ivanc.archimvvm.CacheManager.Managers.DiskManager;
 import uk.ivanc.archimvvm.CacheManager.Managers.MemoryManager;
 import uk.ivanc.archimvvm.CacheManager.Managers.NetworkManager;
-import uk.ivanc.archimvvm.MVVM.Model.RealmRepository;
 import uk.ivanc.archimvvm.MVVM.Model.Repository;
 
 /**
@@ -21,7 +19,6 @@ import uk.ivanc.archimvvm.MVVM.Model.Repository;
  * a certain point in time.
  */
 public class GitHubRepoCache extends Cache<List<Repository>> {
-
     private String key = null;
 
     public GitHubRepoCache() {
@@ -96,5 +93,4 @@ public class GitHubRepoCache extends Cache<List<Repository>> {
         System.out.println("obtainFromNetwork is on processing.");
         return NetworkManager.getApi().publicRepositories((String) param.get("username"));
     }
-
 }

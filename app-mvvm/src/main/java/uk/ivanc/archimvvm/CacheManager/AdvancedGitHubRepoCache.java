@@ -24,7 +24,6 @@ import uk.ivanc.archimvvm.MVVM.Model.Repository;
  * a certain point in time.
  */
 public class AdvancedGitHubRepoCache extends AdvancedCache<List<Repository>> {
-
     private String key = null;
     private RepositoryCacheInterface repoCacheInterface;
 
@@ -36,8 +35,7 @@ public class AdvancedGitHubRepoCache extends AdvancedCache<List<Repository>> {
         this.repoCacheInterface = repoCacheInterface;
     }
 
-    public AdvancedGitHubRepoCache(String key,
-                                   RepositoryCacheInterface repoCacheInterface) {
+    public AdvancedGitHubRepoCache(String key, RepositoryCacheInterface repoCacheInterface) {
         setKey(key);
         this.repoCacheInterface = repoCacheInterface;
     }
@@ -53,20 +51,20 @@ public class AdvancedGitHubRepoCache extends AdvancedCache<List<Repository>> {
         }
     }
 
-    @Override public boolean cacheInMemory(AdvancedModel<List<Repository>> model) {
-        if (key == null || model == null || model.data == null) return false;
-
+    @Override
+    public boolean cacheInMemory(AdvancedModel<List<Repository>> model) {
+        if (key == null || model == null || model.data == null) {
+            return false;
+        }
         List<Repository> repo = new ArrayList<>();
-
         switch (model.state) {
             case STATE_SET:
                 repo.addAll(model.data);
                 MemoryManager.instance.push(key, repo);
                 break;
-
             case STATE_APPEND:
                 List<Repository> repo_pop = (List<Repository>) MemoryManager.instance.pop(key);
-                if(repo_pop == null) {
+                if (repo_pop == null) {
                     repo.addAll(model.data);
                     MemoryManager.instance.push(key, repo);
                 } else {
@@ -74,26 +72,24 @@ public class AdvancedGitHubRepoCache extends AdvancedCache<List<Repository>> {
                     MemoryManager.instance.push(key, repo_pop);
                 }
                 break;
-
             default:
                 return false;
         }
-
         return true;
     }
 
-    @Override public boolean storeToDisk(AdvancedModel<List<Repository>> model) {
-        if (model == null || model.data == null || model.data.size() == 0) return false;
-
+    @Override
+    public boolean storeToDisk(AdvancedModel<List<Repository>> model) {
+        if (model == null || model.data == null || model.data.size() == 0) {
+            return false;
+        }
         switch (model.state) {
             case STATE_SET:
             case STATE_APPEND:
-                DiskManager<Repository, RealmRepository> manager =
-                        new DiskManager<Repository, RealmRepository>();
+                DiskManager<Repository, RealmRepository> manager = new DiskManager<Repository, RealmRepository>();
                 manager.saveToDisk(model.data);
                 manager.closeRealm();
                 break;
-
             default:
                 return false;
         }
@@ -129,34 +125,25 @@ public class AdvancedGitHubRepoCache extends AdvancedCache<List<Repository>> {
     @Override
     protected void obtainFromDisk(Subject<List<Repository>, List<Repository>> stream, HashMap<String, Object> param) {
         System.out.println("obtainFromDisk is on processing.");
-        DiskManager<Repository, RealmRepository> manager =
-                new DiskManager<Repository, RealmRepository>();
-
+        DiskManager<Repository, RealmRepository> manager = new DiskManager<Repository, RealmRepository>();
         final int CNT = 5;
         int count = CNT;
-
         List<Repository> repo = manager.loadAllFromDisk(new Repository());
-
         if (repo == null || repo.size() == 0) {
             manager.closeRealm();
             stream.onNext(null);
             return;
         }
-
         while (true) {
             if (count <= 0) {
                 manager.closeRealm();
                 break;
             }
-
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            } finally {
-
             }
-
             repo = manager.loadAllFromDisk(new Repository());
             repo.get(0).description = String.valueOf(count);
             stream.onNext(repo);
@@ -167,6 +154,6 @@ public class AdvancedGitHubRepoCache extends AdvancedCache<List<Repository>> {
     @Override
     protected void obtainFromNetwork(Subject<List<Repository>, List<Repository>> stream, HashMap<String, Object> param) {
         System.out.println("obtainFromNetwork is on processing.");
-        stream.onNext(NetworkManager.getApi().publicRepositories((String)param.get("username")));
+        stream.onNext(NetworkManager.getApi().publicRepositories((String) param.get("username")));
     }
 }

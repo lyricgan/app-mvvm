@@ -15,71 +15,78 @@ import uk.ivanc.archimvvm.MVVM.Model.User;
  * Simulates three different sources - one from memory, one from disk,
  * and one from network. In reality, they're all in-memory, but let's
  * play pretend.
- *
+ * <p>
  * Observable.create() is used so that we always return the latest data
  * to the subscriber; if you use just() it will only return the data from
  * a certain point in time.
  */
 public class GitHubUserCache extends Cache<List<User>> {
 
-  private String key = null;
+    private String key = null;
 
-  public GitHubUserCache(String key) {
-    this.key = key;
-  }
+    public GitHubUserCache(String key) {
+        this.key = key;
+    }
 
-  @Override public boolean cacheInMemory(List<User> model) {
-    if(key == null || model == null)
-      return false;
+    @Override
+    public boolean cacheInMemory(List<User> model) {
+        if (key == null || model == null) {
+            return false;
+        }
+        MemoryManager.instance.push(key, model);
+        return true;
+    }
 
-    MemoryManager.instance.push(key, model);
-    return true;
-  }
+    @Override
+    public boolean storeToDisk(List<User> model) {
+        if (model == null || model.size() == 0) {
+            return false;
+        }
+        DiskManager<User, RealmRepository> manager = new DiskManager<User, RealmRepository>();
+        manager.saveToDisk(model);
+        manager.closeRealm();
+        return true;
+    }
 
-  @Override public boolean storeToDisk(List<User> model) {
-    if(model == null || model.size() == 0)
-      return false;
+    @Override
+    protected boolean ArriveFromMemory(List<User> model) {
+        return false;
+    }
 
-    DiskManager<User, RealmRepository> manager = new DiskManager<User, RealmRepository>();
-    manager.saveToDisk(model);
-    manager.closeRealm();
-    return true;
-  }
+    @Override
+    protected boolean ArriveFromDisk(List<User> model) {
+        cacheInMemory(model);
+        return true;
+    }
 
-  @Override protected boolean ArriveFromMemory(List<User> model) {
-    return false;
-  }
+    @Override
+    protected boolean ArriveFromNetwork(List<User> model) {
+        cacheInMemory(model);
+        storeToDisk(model);
+        return true;
+    }
 
-  @Override protected boolean ArriveFromDisk(List<User> model) {
-    cacheInMemory(model);
-    return true;
-  }
+    @Override
+    public List<User> obtainFromMemory(HashMap<String, Object> param) {
+        System.out.println("obtainFromMemory is on processing.");
+        return (List<User>) MemoryManager.instance.pop(key);
+    }
 
-  @Override protected boolean ArriveFromNetwork(List<User> model) {
-    cacheInMemory(model);
-    storeToDisk(model);
-    return true;
-  }
+    @Override
+    public List<User> obtainFromDisk(HashMap<String, Object> param) {
+        System.out.println("obtainFromDisk is on processing.");
+        DiskManager<User, RealmRepository> manager = new DiskManager<User, RealmRepository>();
+        List<User> repo = manager.loadFromDiskWithCondition(new User(), "login", (String) param.get("id"));
+        manager.closeRealm();
+        return repo;
+    }
 
-  @Override public List<User> obtainFromMemory(HashMap<String, Object> param) {
-    System.out.println("obtainFromMemory is on processing.");
-    return (List<User>) MemoryManager.instance.pop(key);
-  }
-
-  @Override public List<User> obtainFromDisk(HashMap<String, Object> param) {
-    System.out.println("obtainFromDisk is on processing.");
-    DiskManager<User, RealmRepository> manager = new DiskManager<User, RealmRepository>();
-    List<User> repo = manager.loadFromDiskWithCondition(new User(), "login", (String)param.get("id"));
-    manager.closeRealm();
-    return repo;
-  }
-
-  @Override public List<User> obtainFromNetwork(HashMap<String, Object> param) {
-    System.out.println("obtainFromNetwork is on processing.");
-    User user = NetworkManager.getApi().userFromUrl((String)param.get("id"));
-    List<User> userList = new ArrayList<>();
-    userList.add(user);
-    return userList;
-  }
-
+    @Override
+    public List<User> obtainFromNetwork(HashMap<String, Object> param) {
+        System.out.println("obtainFromNetwork is on processing.");
+        User user = NetworkManager.getApi().userFromUrl((String) param.get("id"));
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+        return userList;
+    }
 }
