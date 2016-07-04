@@ -12,7 +12,6 @@ import uk.ivanc.archimvvm.MVVM.View.RepositoryActivity;
  * View model for each item in the repositories RecyclerView
  */
 public class ItemRepoViewModel extends BaseObservable implements ViewModel {
-
     private Repository repository;
     private Context context;
 
@@ -55,5 +54,4 @@ public class ItemRepoViewModel extends BaseObservable implements ViewModel {
     public void destroy() {
         //In this case destroy doesn't need to do anything because there is not async calls
     }
-
 }

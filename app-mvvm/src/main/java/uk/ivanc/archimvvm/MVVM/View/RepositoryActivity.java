@@ -16,9 +16,7 @@ import uk.ivanc.archimvvm.MVVM.ViewModel.RepositoryViewModel;
 
 public class RepositoryActivity extends AppCompatActivity {
     private static final String EXTRA_REPOSITORY = "EXTRA_REPOSITORY";
-
-    private RepositoryActivityBinding binding;
-    private RepositoryViewModel repositoryViewModel;
+    private RepositoryViewModel mRepositoryViewModel;
 
     public static Intent newIntent(Context context, Repository repository) {
         Intent intent = new Intent(context, RepositoryActivity.class);
@@ -31,17 +29,16 @@ public class RepositoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.repository_activity);
+        RepositoryActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.repository_activity);
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         String key = getIntent().getStringExtra(EXTRA_REPOSITORY);
-        Repository repository = (Repository)ObjectTransferManager.instance.pop_remove(key);
-        repositoryViewModel = new RepositoryViewModel(this, repository);
-        binding.setViewModel(repositoryViewModel);
+        Repository repository = (Repository) ObjectTransferManager.instance.pop_remove(key);
+        mRepositoryViewModel = new RepositoryViewModel(this, repository);
+        binding.setViewModel(mRepositoryViewModel);
 
         //Currently there is no way of setting an activity title using data binding
         setTitle(repository.name);
@@ -50,6 +47,6 @@ public class RepositoryActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        repositoryViewModel.destroy();
+        mRepositoryViewModel.destroy();
     }
 }

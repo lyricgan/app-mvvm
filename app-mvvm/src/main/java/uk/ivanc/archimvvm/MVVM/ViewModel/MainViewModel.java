@@ -27,7 +27,6 @@ import uk.ivanc.archimvvm.MVVM.Model.Repository;
  * View model for the MainActivity
  */
 public class MainViewModel implements ViewModel {
-
     private static final String TAG = "MainViewModel";
 
     public ObservableInt infoMessageVisibility;
@@ -111,7 +110,7 @@ public class MainViewModel implements ViewModel {
 
         HashMap<String, Object> param = new HashMap<>();
         param.put("username", username);
-        sources.setKey(this.getClass().getSimpleName()+username);
+        sources.setKey(this.getClass().getSimpleName() + username);
 
         subscription = sources.processing(refresh, param)
                 .observeOn(AndroidSchedulers.mainThread())

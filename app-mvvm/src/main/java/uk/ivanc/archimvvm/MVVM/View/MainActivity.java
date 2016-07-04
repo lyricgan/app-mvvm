@@ -17,29 +17,28 @@ import uk.ivanc.archimvvm.MVVM.Model.Repository;
 import uk.ivanc.archimvvm.MVVM.ViewModel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity implements MainViewModel.DataListener {
-    private MainActivityBinding binding;
-    private MainViewModel mainViewModel;
+    private MainActivityBinding mBinding;
+    private MainViewModel mMainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
-        mainViewModel = new MainViewModel(this, this);
-        binding.setViewModel(mainViewModel);
-        setSupportActionBar(binding.toolbar);
-        setupRecyclerView(binding.reposRecyclerView);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
+        mMainViewModel = new MainViewModel(this, this);
+        mBinding.setViewModel(mMainViewModel);
+        setSupportActionBar(mBinding.toolbar);
+        setupRecyclerView(mBinding.reposRecyclerView);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mainViewModel.destroy();
+        mMainViewModel.destroy();
     }
 
     @Override
     public void onRepositoriesChanged(List<Repository> repositories) {
-        RepositoryAdapter adapter =
-                (RepositoryAdapter) binding.reposRecyclerView.getAdapter();
+        RepositoryAdapter adapter = (RepositoryAdapter) mBinding.reposRecyclerView.getAdapter();
         adapter.setRepositories(repositories);
         adapter.notifyDataSetChanged();
         hideSoftKeyboard();
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Dat
 
     private void hideSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(binding.editTextUsername.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(mBinding.editTextUsername.getWindowToken(), 0);
     }
-
 }

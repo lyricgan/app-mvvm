@@ -32,7 +32,8 @@ public class Repository extends BaseModel<RealmRepository> {
         return fork;
     }
 
-    @Override public RealmRepository transformToRealm() {
+    @Override
+    public RealmRepository transformToRealm() {
         RealmRepository realmRepo = new RealmRepository();
         realmRepo.setId(id);
         realmRepo.setName(name);
@@ -47,7 +48,8 @@ public class Repository extends BaseModel<RealmRepository> {
         return realmRepo;
     }
 
-    @Override public BaseModel transformFromRealm(RealmRepository realm) {
+    @Override
+    public BaseModel transformFromRealm(RealmRepository realm) {
         Repository repo = new Repository();
         repo.id = realm.getId();
         repo.name = realm.getName();
@@ -59,12 +61,13 @@ public class Repository extends BaseModel<RealmRepository> {
         repo.homepage = realm.getHomepage();
 
         User gitUser = new User();
-        repo.owner = ((User)gitUser.transformFromRealm(realm.getOwner()));
+        repo.owner = ((User) gitUser.transformFromRealm(realm.getOwner()));
         repo.fork = realm.getFork();
         return repo;
     }
 
-    @Override public Class getRealmClass() {
+    @Override
+    public Class getRealmClass() {
         return RealmRepository.class;
     }
 
