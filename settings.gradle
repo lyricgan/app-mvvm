@@ -1,2 +1,3 @@
-//include ':app', ':app-mvp', ':app-mvvm'
+include ':app'
+include ':app-mvp'
 include ':app-mvvm'

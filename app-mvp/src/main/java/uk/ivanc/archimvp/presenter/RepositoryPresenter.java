@@ -11,9 +11,7 @@ import uk.ivanc.archimvp.model.User;
 import uk.ivanc.archimvp.view.RepositoryMvpView;
 
 public class RepositoryPresenter implements Presenter<RepositoryMvpView> {
-
     private static final String TAG = "RepositoryPresenter";
-
     private RepositoryMvpView repositoryMvpView;
     private Subscription subscription;
 
@@ -25,7 +23,9 @@ public class RepositoryPresenter implements Presenter<RepositoryMvpView> {
     @Override
     public void detachView() {
         this.repositoryMvpView = null;
-        if (subscription != null) subscription.unsubscribe();
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     public void loadOwner(String userUrl) {

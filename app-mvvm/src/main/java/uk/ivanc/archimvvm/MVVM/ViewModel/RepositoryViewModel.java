@@ -26,7 +26,6 @@ import uk.ivanc.archimvvm.MVVM.Model.User;
  * ViewModel for the RepositoryActivity
  */
 public class RepositoryViewModel implements ViewModel {
-
     private static final String TAG = "RepositoryViewModel";
 
     public ObservableField<String> ownerName;

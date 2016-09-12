@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import retrofit.HttpException;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,7 +28,6 @@ import uk.ivanc.archi.model.GithubService;
 import uk.ivanc.archi.model.Repository;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String TAG = "MainActivity";
 
     private Subscription subscription;
@@ -78,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (subscription != null) subscription.unsubscribe();
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     public void loadGithubRepos(String username) {
