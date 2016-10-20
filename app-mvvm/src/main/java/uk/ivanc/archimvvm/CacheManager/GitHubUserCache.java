@@ -23,6 +23,9 @@ import uk.ivanc.archimvvm.MVVM.Model.User;
 public class GitHubUserCache extends Cache<List<User>> {
     private String mKey = null;
 
+    public GitHubUserCache() {
+    }
+
     public GitHubUserCache(String key) {
         this.mKey = key;
     }
