@@ -117,7 +117,6 @@ public abstract class AdvancedCache<T> {
             obtainFromMemory(stream, param);
             subscriptions.unsubscribe();
         });
-
         return observable;
     }
 

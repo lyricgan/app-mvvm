@@ -10,13 +10,13 @@ public enum ObjectTransferManager {
      */
     instance;
 
-    private LruCache mDataCache = new LruCache<String, Object>((int) (Runtime.getRuntime().maxMemory() / 8));
+    private LruCache<Object, Object> mDataCache = new LruCache<>((int) (Runtime.getRuntime().maxMemory() / 8));
 
     ObjectTransferManager() {
     }
 
-    public void remove(Object key) {
-        mDataCache.remove(key);
+    public Object remove(Object key) {
+        return mDataCache.remove(key);
     }
 
     public Object pop(Object key) {

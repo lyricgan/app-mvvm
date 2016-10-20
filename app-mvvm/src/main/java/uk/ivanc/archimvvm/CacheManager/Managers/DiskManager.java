@@ -69,21 +69,21 @@ public class DiskManager<K extends BaseModel, V extends RealmObject> {
 //      });
 //    }
 
+    // map internal UI objects to Realm objects, sync
     public void saveToDisk(K model) {
-        // map internal UI objects to Realm objects
-
-        //sync
         getInstance().beginTransaction();
         getInstance().copyToRealmOrUpdate((V) model.transformToRealm());
         getInstance().commitTransaction();
+    }
 
-        //async
-        //sRealm.executeTransaction(new Realm.Transaction() {
-        //  @Override
-        //  public void execute(Realm bgRealm) {
-        //    bgRealm.copyToRealmOrUpdate((V) model.transformToRealm());
-        //  }
-        //}, null);
+    // async
+    public void saveToDiskAsync(K model) {
+        getInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate((V) model.transformToRealm());
+            }
+        }, null);
     }
 
     public void saveToDisk(List<K> model) {

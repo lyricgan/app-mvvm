@@ -10,7 +10,7 @@ public enum MemoryManager {
      */
     instance;
 
-    private LruCache mDataCache = new LruCache<String, Object>((int) (Runtime.getRuntime().maxMemory() / 8));
+    private LruCache<Object, Object> mDataCache = new LruCache<>((int) (Runtime.getRuntime().maxMemory() / 8));
 
     MemoryManager() {
     }

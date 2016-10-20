@@ -45,7 +45,6 @@ public abstract class Cache<T> {
             subscriber.onNext(obtainFromMemory(param));
             subscriber.onCompleted();
         });
-
         return observable.doOnNext(data -> {
             arriveFromMemory(data);
         }).compose(logSource("MEMORY"));
