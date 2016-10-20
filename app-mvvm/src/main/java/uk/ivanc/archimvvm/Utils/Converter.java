@@ -7,7 +7,7 @@ import uk.ivanc.archimvvm.CacheManager.GitHubUserCache;
 
 /**
  * @author lyricgan
- * @description use key-value like String-Class for cache convert
+ * @description use String-Class as key-value for cache convert
  * @time 2016/10/20 15:59
  */
 public enum Converter {
@@ -28,6 +28,7 @@ public enum Converter {
     public <T> T convert(String key) {
         Class<?> cls = getMap().get(key);
         try {
+            // must implements default constructor (that is, zero-argument)
             return (T) cls.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
