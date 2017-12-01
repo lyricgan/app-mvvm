@@ -36,7 +36,7 @@ public class RepositoryActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         String key = getIntent().getStringExtra(EXTRA_REPOSITORY);
-        Repository repository = (Repository) ObjectTransferManager.instance.pop_remove(key);
+        Repository repository = (Repository) ObjectTransferManager.instance.popRemove(key);
         mRepositoryViewModel = new RepositoryViewModel(this, repository);
         binding.setViewModel(mRepositoryViewModel);
 

@@ -23,7 +23,7 @@ public enum ObjectTransferManager {
         return mDataCache.get(key);
     }
 
-    public Object pop_remove(Object key) {
+    public Object popRemove(Object key) {
         Object object = mDataCache.get(key);
         mDataCache.remove(key);
         return object;
