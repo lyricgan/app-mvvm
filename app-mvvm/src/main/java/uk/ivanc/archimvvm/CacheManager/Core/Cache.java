@@ -26,23 +26,23 @@ public abstract class Cache<T> {
 
     protected abstract boolean arriveFromNetwork(T model);
 
-    protected abstract T obtainFromMemory(HashMap<String, Object> param);
+    protected abstract T obtainFromMemory(HashMap<String, Object> params);
 
-    protected abstract T obtainFromDisk(HashMap<String, Object> param);
+    protected abstract T obtainFromDisk(HashMap<String, Object> params);
 
-    protected abstract T obtainFromNetwork(HashMap<String, Object> param);
+    protected abstract T obtainFromNetwork(HashMap<String, Object> params);
 
-    public Observable<T> processing(boolean refresh, HashMap<String, Object> param) {
-        return refresh ? network(param) : Observable.concat(
-                memory(param),
-                disk(param),
-                network(param)
+    public Observable<T> processing(boolean refresh, HashMap<String, Object> params) {
+        return refresh ? network(params) : Observable.concat(
+                memory(params),
+                disk(params),
+                network(params)
         ).first(data -> data != null);
     }
 
-    private Observable<T> memory(HashMap<String, Object> param) {
+    private Observable<T> memory(HashMap<String, Object> params) {
         Observable<T> observable = Observable.create(subscriber -> {
-            subscriber.onNext(obtainFromMemory(param));
+            subscriber.onNext(obtainFromMemory(params));
             subscriber.onCompleted();
         });
         return observable.doOnNext(data -> {
@@ -50,9 +50,9 @@ public abstract class Cache<T> {
         }).compose(logSource("MEMORY"));
     }
 
-    private Observable<T> disk(HashMap<String, Object> param) {
+    private Observable<T> disk(HashMap<String, Object> params) {
         Observable<T> observable = Observable.create(subscriber -> {
-            subscriber.onNext(obtainFromDisk(param));
+            subscriber.onNext(obtainFromDisk(params));
             subscriber.onCompleted();
         });
 
@@ -62,9 +62,9 @@ public abstract class Cache<T> {
         }).compose(logSource("DISK"));
     }
 
-    private Observable<T> network(HashMap<String, Object> param) {
+    private Observable<T> network(HashMap<String, Object> params) {
         Observable<T> observable = Observable.create(subscriber -> {
-            subscriber.onNext(obtainFromNetwork(param));
+            subscriber.onNext(obtainFromNetwork(params));
             subscriber.onCompleted();
         });
 

@@ -62,7 +62,9 @@ public class MainViewModel implements ViewModel {
 
     @Override
     public void destroy() {
-        if (subscription != null && !subscription.isUnsubscribed()) subscription.unsubscribe();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
         subscription = null;
         context = null;
         dataListener = null;
@@ -105,20 +107,21 @@ public class MainViewModel implements ViewModel {
         progressVisibility.set(View.VISIBLE);
         recyclerViewVisibility.set(View.INVISIBLE);
         infoMessageVisibility.set(View.INVISIBLE);
-        if (subscription != null && !subscription.isUnsubscribed()) subscription.unsubscribe();
-
-
-        HashMap<String, Object> param = new HashMap<>();
-        param.put("username", username);
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("username", username);
         sources.setKey(this.getClass().getSimpleName() + username);
-
-        subscription = sources.processing(refresh, param)
+        subscription = sources.processing(refresh, params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<List<Repository>>() {
                     @Override
                     public void onCompleted() {
-                        if (dataListener != null) dataListener.onRepositoriesChanged(repositories);
+                        if (dataListener != null) {
+                            dataListener.onRepositoriesChanged(repositories);
+                        }
                         progressVisibility.set(View.INVISIBLE);
                         if (!repositories.isEmpty()) {
                             recyclerViewVisibility.set(View.VISIBLE);
@@ -132,12 +135,7 @@ public class MainViewModel implements ViewModel {
                     public void onError(Throwable error) {
                         Log.e(TAG, "Error loading GitHub repos ", error);
                         progressVisibility.set(View.INVISIBLE);
-//                        if (isHttp404(error)) {
-//                            infoMessage.set(context.getString(R.string.error_username_not_found));
-//                        } else
-                        {
-                            infoMessage.set(context.getString(R.string.error_loading_repos));
-                        }
+                        infoMessage.set(context.getString(R.string.error_loading_repos));
                         infoMessageVisibility.set(View.VISIBLE);
                     }
 
@@ -149,11 +147,8 @@ public class MainViewModel implements ViewModel {
                 });
     }
 
-//    private static boolean isHttp404(Throwable error) {
-//        return error instanceof HttpException && ((HttpException) error).code() == 404;
-//    }
-
     public interface DataListener {
+
         void onRepositoriesChanged(List<Repository> repositories);
     }
 }
