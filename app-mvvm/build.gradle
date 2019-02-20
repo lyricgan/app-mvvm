@@ -36,18 +36,18 @@ android {
 
 dependencies {
     Map<String, String> dependencies = rootProject.ext.dependencies;
-    compile dependencies.appCompat
-    compile dependencies.cardView
-    compile dependencies.recyclerView
-    compile dependencies.picasso
-    compile dependencies.butterknife
-    compile dependencies.realm
-    compile dependencies.rxAndroid
-    compile dependencies.circleImageView
+    implementation dependencies.appCompat
+    implementation dependencies.cardView
+    implementation dependencies.recyclerView
+    implementation dependencies.picasso
+    implementation dependencies.butterknife
+    implementation dependencies.realm
+    implementation dependencies.rxAndroid
+    implementation dependencies.circleImageView
 
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    implementation 'com.squareup.retrofit:retrofit:1.9.0'
 
-    testCompile dependencies.jUnit
-    testCompile dependencies.mockito
-    testCompile dependencies.robolectric
+    testImplementation dependencies.jUnit
+    testImplementation dependencies.mockito
+    testImplementation dependencies.robolectric
 }

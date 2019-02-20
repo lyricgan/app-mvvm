@@ -25,11 +25,9 @@ import uk.ivanc.archimvp.model.Repository;
 import uk.ivanc.archimvp.presenter.MainPresenter;
 
 public class MainActivity extends AppCompatActivity implements MainMvpView {
-
     private MainPresenter presenter;
 
     private RecyclerView reposRecycleView;
-    private Toolbar toolbar;
     private EditText editTextUsername;
     private ProgressBar progressBar;
     private TextView infoTextView;
@@ -43,16 +41,16 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
         presenter.attachView(this);
 
         setContentView(R.layout.activity_main);
-        progressBar = (ProgressBar) findViewById(R.id.progress);
-        infoTextView = (TextView) findViewById(R.id.text_info);
+        progressBar = findViewById(R.id.progress);
+        infoTextView = findViewById(R.id.text_info);
         //Set up ToolBar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //Set up RecyclerView
-        reposRecycleView = (RecyclerView) findViewById(R.id.repos_recycler_view);
+        reposRecycleView = findViewById(R.id.repos_recycler_view);
         setupRecyclerView(reposRecycleView);
         // Set up search button
-        searchButton = (ImageButton) findViewById(R.id.button_search);
+        searchButton = findViewById(R.id.button_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
             }
         });
         //Set up username EditText
-        editTextUsername = (EditText) findViewById(R.id.edit_text_username);
+        editTextUsername = findViewById(R.id.edit_text_username);
         editTextUsername.addTextChangedListener(mHideShowButtonTextWatcher);
         editTextUsername.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -128,13 +126,14 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
 
     private void hideSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editTextUsername.getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(editTextUsername.getWindowToken(), 0);
+        }
     }
 
     private TextWatcher mHideShowButtonTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-
         }
 
         @Override
@@ -144,8 +143,6 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
 
         @Override
         public void afterTextChanged(Editable editable) {
-
         }
     };
-
 }

@@ -39,7 +39,9 @@ public class MainPresenter implements Presenter<MainMvpView> {
             return;
         }
         mMainMvpView.showProgressIndicator();
-        if (subscription != null) subscription.unsubscribe();
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
         ArchiApplication application = ArchiApplication.get(mMainMvpView.getContext());
         GithubService githubService = application.getGithubService();
         subscription = githubService.publicRepositories(username)

@@ -18,10 +18,8 @@ import uk.ivanc.archimvp.model.User;
 import uk.ivanc.archimvp.presenter.RepositoryPresenter;
 
 public class RepositoryActivity extends AppCompatActivity implements RepositoryMvpView {
-
     private static final String EXTRA_REPOSITORY = "EXTRA_REPOSITORY";
 
-    private Toolbar toolbar;
     private TextView descriptionText;
     private TextView homepageText;
     private TextView languageText;
@@ -47,15 +45,15 @@ public class RepositoryActivity extends AppCompatActivity implements RepositoryM
         presenter.attachView(this);
 
         setContentView(R.layout.activity_repository);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        descriptionText = (TextView) findViewById(R.id.text_repo_description);
-        homepageText = (TextView) findViewById(R.id.text_homepage);
-        languageText = (TextView) findViewById(R.id.text_language);
-        forkText = (TextView) findViewById(R.id.text_fork);
-        ownerNameText = (TextView) findViewById(R.id.text_owner_name);
-        ownerEmailText = (TextView) findViewById(R.id.text_owner_email);
-        ownerLocationText = (TextView) findViewById(R.id.text_owner_location);
-        ownerImage = (ImageView) findViewById(R.id.image_owner);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        descriptionText = findViewById(R.id.text_repo_description);
+        homepageText = findViewById(R.id.text_homepage);
+        languageText = findViewById(R.id.text_language);
+        forkText = findViewById(R.id.text_fork);
+        ownerNameText = findViewById(R.id.text_owner_name);
+        ownerEmailText = findViewById(R.id.text_owner_email);
+        ownerLocationText = findViewById(R.id.text_owner_location);
+        ownerImage = findViewById(R.id.image_owner);
         ownerLayout = findViewById(R.id.layout_owner);
 
         setSupportActionBar(toolbar);

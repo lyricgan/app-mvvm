@@ -21,11 +21,9 @@ import uk.ivanc.archi.model.Repository;
 import uk.ivanc.archi.model.User;
 
 public class RepositoryActivity extends AppCompatActivity {
-
     private static final String EXTRA_REPOSITORY = "EXTRA_REPOSITORY";
     private static final String TAG = "RepositoryActivity";
 
-    private Toolbar toolbar;
     private TextView descriptionText;
     private TextView homepageText;
     private TextView languageText;
@@ -48,21 +46,21 @@ public class RepositoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repository);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        descriptionText = (TextView) findViewById(R.id.text_repo_description);
-        homepageText = (TextView) findViewById(R.id.text_homepage);
-        languageText = (TextView) findViewById(R.id.text_language);
-        forkText = (TextView) findViewById(R.id.text_fork);
-        ownerNameText = (TextView) findViewById(R.id.text_owner_name);
-        ownerEmailText = (TextView) findViewById(R.id.text_owner_email);
-        ownerLocationText = (TextView) findViewById(R.id.text_owner_location);
-        ownerImage = (ImageView) findViewById(R.id.image_owner);
+        descriptionText = findViewById(R.id.text_repo_description);
+        homepageText = findViewById(R.id.text_homepage);
+        languageText = findViewById(R.id.text_language);
+        forkText = findViewById(R.id.text_fork);
+        ownerNameText = findViewById(R.id.text_owner_name);
+        ownerEmailText = findViewById(R.id.text_owner_email);
+        ownerLocationText = findViewById(R.id.text_owner_location);
+        ownerImage = findViewById(R.id.image_owner);
         ownerLayout = findViewById(R.id.layout_owner);
 
         Repository repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
